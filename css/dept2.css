@@ -1,0 +1,29 @@
+h4.courseTitle {
+font-weight: bold;
+padding-left: 9px;
+margin-top: 4px;
+margin-bottom: 2px;
+font-size: 14px;
+}
+.sidebar {
+	padding-top: 0px;
+}
+
+.navbar .nav {
+	margin-left: 64px;
+
+}
+
+.jumbotron h1 {
+	font-size: 43px;
+}
+
+.label-danger a {
+color: #fff;
+}
+
+div.caption a:hover,
+div.caption a:focus {
+text-decoration: none;
+}
+
