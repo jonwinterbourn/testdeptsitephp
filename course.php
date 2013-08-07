@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Whiteside Community College (Test)</title>
+    <title>Whiteside Community College: Course page</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
@@ -84,7 +84,7 @@
 			</a>
 			<ul class="nav navbar-nav">
 				<li class="active">
-					<a href="#">Home</a>
+					<a href="/">Home</a>
 				</li>
 				<li>
 					<a href="#">Link 1</a>
@@ -138,59 +138,63 @@
 <!-- next row -->
 
 <div class="row">
-	<div class="col col-lg-9 col-push-3">
-		<div class="jumbotron">
-			<h1>Welcome to the Department of Economics</h1>
-			<p>
-			Some blurb about the department and its excellence here. Some blurb about the department and its excellence here. Some blurb about the department and its excellence here. Some blurb about the department and its excellence here. Some blurb about the department and its excellence here.
-			</p>
-		</div>
 
-<!-- items -->
+<?php
+ //get id 
+	if(array_key_exists('course_id', $_GET)) {
+		$courseId = $_GET['course_id'];
+		$course = simplexml_load_file('http://cricket-test.herokuapp.com/courses/' . $courseId . '.xml');
 
-<div class="row">
+	        if (!$course) {
+        	        exit('<p>Failed to load xml.</p>');
+        	} else {
+?>
+			<div class="col col-lg-9 col-push-3">
+                	<div class="jumbotron">
+                        	<h1><?php echo $course->title, PHP_EOL; ?></h1>
+                        	<p>
+                        	Some blurb about the course and its excellence here.
+                        	</p>
+                	</div>
+
+		
+			<div class="row">
 
 
-	<?php
-		$courseNo = 0;
-		$undergradNo = 0;
-		$postgradNo = 0;
-		$catalog = simplexml_load_file('http://cricket-test.herokuapp.com/courses.xml?org_unit_id=29');
-		if (!$catalog) {
-			exit('<p>Failed to load xml.</p>');
-		} else {
-			$edLevel = $_GET["educationLevel"];
-			#echo $edLevel, PHP_EOL;
-			if ($edLevel) {
-				$result = $catalog->xpath("//course/education-level[. = '{$edLevel}']/..");
-			}
-			else {
-				$result = $catalog->xpath('//course');#[contains(subject,"Economics")]');
-			}
+<?php
 
-			foreach ($result as $key=>$course) {
-				echo '<div class="col col-lg-4 col-sm-6">', PHP_EOL;
-				echo '<div class="thumbnail" itemscope itemtype="http://schema.org/Product">', PHP_EOL;
-				echo '<h4 class="courseTitle">', $course->title, '</h4>', PHP_EOL;
-				echo '<div class="caption">', PHP_EOL;
-				echo '<h5 class="ellipsis">Level: ', $course->{'education-level'}, '</h5>', PHP_EOL;
-				echo '<h5 class="ellipsis">Starts: ', $course->{'start-date'}, '</h5>', PHP_EOL;
-				echo '<h5 class="ellipsis">Duration: ', $course->fields->{'j017fbfe5-a8f4-4733-acd1-046092acfdd1'}->Duration, ' year/s</h5>', PHP_EOL;
-//				echo '<div itemprop="offers" itemscope itemtype="http://schema.org/Offer"><a href="', $course->id,'.php"><span class="label label-danger">View course details</span></a></div>', PHP_EOL;
-				echo '<div itemprop="offers" itemscope itemtype="http://schema.org/Offer"><a href="course.php?course_id=', $course->id,'"><span class="label label-danger">View course details</span></a></div>', PHP_EOL;
-				echo '</div></div></div>', PHP_EOL;
-				
-			}
-			//courses
-			$courseNo = $catalog->course->count();
-			//undergrad
-			$undergradNo = count($catalog->xpath("course/education-level[. = 'Undergraduate']"));	
-			//postgrad
-			#$postgradNo = $catalog->course->{'start-date'}->count();
-			$postgradNo = count($catalog->xpath("course/education-level[. = 'Postgraduate']"));
-	}
+				echo '<div class="col col-lg-12 col-sm-18">', PHP_EOL;
+        			echo '<div class="thumbnail singleCourse" itemscope itemtype="http://schema.org/Product">', PHP_EOL;
+        			echo '<div class="description">', PHP_EOL;
+        			echo '<p>', $course->description, '<p>', PHP_EOL;
 ?>
 
+			</div>
+<?php
+		        echo '<div class="caption">', PHP_EOL;
+       			echo '<h4>Course Fact File</h4>', PHP_EOL;
+       			echo '<h5 class="ellipsis">Level: ', $course->{'education-level'}, '</h5>', PHP_EOL;
+		        echo '<h5 class="ellipsis">UCAS Code: ', $course->fields->{'g7fb0ebf0-5b9a-45ef-a53e-072a1fcfd924'}->{'UCAS-Code'}, '</h5>', PHP_EOL;
+		        echo '<h5 class="ellipsis">Duration: ', $course->fields->{'j017fbfe5-a8f4-4733-acd1-046092acfdd1'}->Duration, ' year/s</h5>', PHP_EOL;
+		        echo '<h5 class="ellipsis">Places Available: ', $course->fields->{'b7d89c9ae-3200-4cd8-b6e4-6d91bba8cd05'}->Places, '</h5>', PHP_EOL;
+		        echo '<h5 class="ellipsis">Applications Last Year: ', $course->fields->{'i7635767d-160a-4cfa-8af0-f1d341ebaec5'}->Applicants, '</h5>', PHP_EOL;
+		        echo '<h5 class="ellipsis">Typical Offer: ', $course->fields->{'xd42f1821-516e-46dd-97e3-f6b5be0722f5'}->{'Typical-offer-A-level'}, '</h5>', PHP_EOL;
+		        echo '<h5 class="ellipsis">Start date: ', $course->{'start-date'}, '</h5>', PHP_EOL;
+		        echo '</div>'
+?>
+
+<?php
+                        echo '</div>', PHP_EOL;
+                        echo '</div></div>', PHP_EOL;
+        	}
+?>
+			
+<?php
+	}
+	else {
+		exit('<p>Failed to process id.</p>');
+	}
+?>
 </div>
 
 
@@ -209,18 +213,15 @@ Back to top
 </p>
 <div class="panel">
 <div class="panel-heading">
-<h4>Courses </h4>
+<h4>Courses</h4>
 </div>
 <div class="list-group list-group-flush">
-<a class="list-group-item" href="/dept/#">
-All courses
-</a>
-<a class="list-group-item" href="?educationLevel=Undergraduate">
-<span class="badge"><?php echo $undergradNo; ?></span>
+<a class="list-group-item" href="#">
+<span class="badge">3</span>
 Undergraduate courses
 </a>
-<a class="list-group-item" href="?educationLevel=Postgraduate">
-<span class="badge"><?php echo $postgradNo; ?></span>
+<a class="list-group-item" href="#">
+<span class="badge">5</span>
 Postgraduate courses
 </a>
 </div>

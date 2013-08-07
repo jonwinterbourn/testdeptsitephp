@@ -26,4 +26,22 @@ div.caption a:hover,
 div.caption a:focus {
 text-decoration: none;
 }
-
+div.description {
+	padding:9px 9px 0 9px;
+}
+.singleCourse div.caption {
+	border: 1px solid #000;
+	background-color: whitesmoke;
+	margin: 9px;
+	color: #333333;
+	padding: 0px!important;
+}
+.singleCourse div.caption h4 {
+	background-color:greenyellow;
+}
+.singleCourse div.caption h4,
+.singleCourse div.caption h5 {
+	padding: 4px;
+	border-bottom: 1px solid #000;
+	margin: 0px;
+} 
